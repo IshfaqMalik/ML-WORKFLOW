@@ -1,8 +1,8 @@
-# 🧠 ML Workflow for Image Classification using Step Functions
+# ML Workflow for Image Classification using Step Functions
 
 This project demonstrates how to deploy and monitor a Machine Learning pipeline for **image classification** using **AWS Step Functions** and **Amazon SageMaker**. It uses the **CIFAR-100** dataset and mimics real-world scenarios in ML workflow orchestration with serverless architecture.
 
-## 🗂️ Project Overview
+## Project Overview
 
 The notebook walks through the following pipeline stages:
 
@@ -13,7 +13,7 @@ The notebook walks through the following pipeline stages:
 5. **Evaluate & Monitor**: Evaluate model accuracy and dynamically branch logic.
 6. **(Optional)**: Deploy the model if accuracy meets a certain threshold.
 
-## 🖼️ Dataset
+##  Dataset
 
 We use the **CIFAR-100 dataset** available [here](https://www.cs.toronto.edu/~kriz/cifar-100-python.tar.gz), which consists of 100 classes of 32x32 color images. The ETL pipeline is built to process this data efficiently and stage it into an S3 bucket.
 
@@ -24,9 +24,9 @@ We use the **CIFAR-100 dataset** available [here](https://www.cs.toronto.edu/~kr
 - **Amazon SageMaker** – to train the image classification model.
 - **AWS Step Functions** – to orchestrate and monitor the pipeline.
 
-## 📦 Key Components
+## Key Components
 
-### ✅ Data Extraction
+### Data Extraction
 
 ```python
 def extract_cifar_data(url, filename="cifar.tar.gz"):
@@ -35,15 +35,15 @@ def extract_cifar_data(url, filename="cifar.tar.gz"):
         file_context.write(r.content)
 ```
 
-### ✅ Data Transformation & Upload
+### Data Transformation & Upload
 
 Images are processed and reshaped, then uploaded to S3 under a structured format that SageMaker expects.
 
-### ✅ ML Model Training
+### ML Model Training
 
 A SageMaker training job is triggered via a Step Function state. The training script uses TensorFlow or PyTorch to build a Convolutional Neural Network (CNN).
 
-### ✅ Model Evaluation
+###  Model Evaluation
 
 Accuracy and other metrics are computed and used as a branching condition in Step Functions:
 
@@ -55,7 +55,7 @@ Accuracy and other metrics are computed and used as a branching condition in Ste
 }
 ```
 
-## 🎯 Stretch Goals Achieved
+##  Stretch Goals Achieved
 
 - ✅ Dynamic branching based on evaluation metrics  
 - ✅ Automated data staging into S3  
@@ -71,7 +71,7 @@ Add these to your `assets/` folder and embed:
 - Sample model predictions
 - Confusion matrix or accuracy plot
 
-## 🧪 How to Run
+##  How to Run
 
 1. Launch a SageMaker Notebook (`ml.t3.medium` or higher)
 2. Clone the repo and run `starter.ipynb`
@@ -80,7 +80,7 @@ Add these to your `assets/` folder and embed:
 5. Define Step Function using provided JSON definition
 6. Start execution from the AWS Console
 
-## 🧰 Tools Used
+##  Tools Used
 
 - Python (pandas, NumPy, TensorFlow/PyTorch, boto3)
 - AWS Lambda
@@ -88,6 +88,6 @@ Add these to your `assets/` folder and embed:
 - Amazon S3
 - AWS Step Functions
 
-## 📌 Conclusion
+##  Conclusion
 
 This project provides a robust blueprint for building ML pipelines on AWS using modern, serverless tools. It's extensible, production-ready, and suitable for use cases involving continuous model improvement, real-time monitoring, and scalable training.
