@@ -1,0 +1,79 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Lambda1-SerialImageData",
+  "States": {
+    "Lambda1-SerialImageData": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Output": "{% $states.result.Payload %}",
+      "Arguments": {
+        "FunctionName": "arn:aws:lambda:us-east-1:381491983227:function:serializeImageData:$LATEST",
+        "Payload": "{% $states.input %}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Lambda2-ImageClassification"
+    },
+    "Lambda2-ImageClassification": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Output": "{% $states.result.Payload %}",
+      "Arguments": {
+        "FunctionName": "arn:aws:lambda:us-east-1:381491983227:function:iumage-classification:$LATEST",
+        "Payload": "{% $states.input %}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Lambda3-MinThreshhold"
+    },
+    "Lambda3-MinThreshhold": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Output": "{% $states.result.Payload %}",
+      "Arguments": {
+        "FunctionName": "arn:aws:lambda:us-east-1:381491983227:function:Filter-Low-Confidence-Inferences:$LATEST",
+        "Payload": "{% $states.input %}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "End": true
+    }
+  },
+  "QueryLanguage": "JSONata"
+}
